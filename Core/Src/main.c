@@ -23,7 +23,8 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
-
+#include "soft_timer.h"
+#include "driver_oled.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -44,8 +45,9 @@
 /* Private variables ---------------------------------------------------------*/
 
 /* USER CODE BEGIN PV */
-
-
+static volatile uint32_t clock_seconds = 0;    // ISR 中写，主循环中读
+static volatile uint8_t clock_update_flag = 0;  // ISR 中置 1，主循环中清 0
+static soft_timer_t clock_timer;
 /* USER CODE END PV */
 
 /* Private function prototypes -----------------------------------------------*/
@@ -57,7 +59,19 @@ void SystemClock_Config(void);
 /* Private user code ---------------------------------------------------------*/
 /* USER CODE BEGIN 0 */
 
-void OLED_Test(void);
+// SysTick 每 1000ms 调用一次，计数 + 置标志 + 翻转 LED
+static void clock_tick(void *arg)
+{
+    clock_seconds++;
+    clock_update_flag = 1;
+    HAL_GPIO_TogglePin(GPIOC, GPIO_PIN_13);  // LED 跟着秒跳动
+}
+
+// 供 SysTick_Handler 调用，每 1ms 执行一次
+void app_systick_handler(void)
+{
+    soft_timer_process(&clock_timer);
+}
 
 void LED_Control(int on)
 {
@@ -116,18 +130,42 @@ int main(void)
   MX_GPIO_Init();
   MX_I2C1_Init();
   /* USER CODE BEGIN 2 */
-	
 	LED_Control(0);
 	BUZZ_Control(0);
-	OLED_Test();
-	
+	OLED_Init();
+	OLED_Clear();
+	OLED_PrintString(4, 1, "LED Clock");
+	OLED_PrintString(4, 3, "00:00:00");
 
+	soft_timer_init(&clock_timer, 1000, SOFT_TIMER_MODE_PERIODIC, clock_tick, NULL);  // 每秒：计数 + LED 翻转
+	soft_timer_start(&clock_timer);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+    // OLED 刷新放在主循环，I2C 操作耗时长不适合放在 ISR
+    if (clock_update_flag) {
+      clock_update_flag = 0;
+      uint32_t s = clock_seconds;
+      uint32_t hh = (s / 3600) % 24;
+      uint32_t mm = (s / 60) % 60;
+      uint32_t ss = s % 60;
+
+      char buf[9];
+      buf[0] = '0' + hh / 10;
+      buf[1] = '0' + hh % 10;
+      buf[2] = (ss & 1) ? ':' : ' ';
+      buf[3] = '0' + mm / 10;
+      buf[4] = '0' + mm % 10;
+      buf[5] = buf[2];
+      buf[6] = '0' + ss / 10;
+      buf[7] = '0' + ss % 10;
+      buf[8] = '\0';
+
+      OLED_PrintString(4, 3, buf);
+    }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
