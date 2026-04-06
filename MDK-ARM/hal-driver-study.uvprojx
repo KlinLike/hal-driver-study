@@ -339,7 +339,7 @@
               <MiscControls></MiscControls>
               <Define>USE_HAL_DRIVER,STM32F103xB</Define>
               <Undefine></Undefine>
-              <IncludePath>../Core/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Middlewares;../Drivers/MCU_F103</IncludePath>
+              <IncludePath>../Core/Inc;../App/inc;../Drivers/STM32F1xx_HAL_Driver/Inc;../Drivers/STM32F1xx_HAL_Driver/Inc/Legacy;../Drivers/CMSIS/Device/ST/STM32F1xx/Include;../Drivers/CMSIS/Include;../Middlewares;../Drivers/MCU_F103</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -511,6 +511,11 @@
               </FileOption>
             </File>
             <File>
+              <FileName>usart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Core/Src/usart.c</FilePath>
+            </File>
+            <File>
               <FileName>stm32f1xx_it.c</FileName>
               <FileType>1</FileType>
               <FilePath>../Core/Src/stm32f1xx_it.c</FilePath>
@@ -585,6 +590,11 @@
                   </Cads>
                 </FileArmAds>
               </FileOption>
+            </File>
+            <File>
+              <FileName>stm32f1xx_hal_uart.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../Drivers/STM32F1xx_HAL_Driver/Src/stm32f1xx_hal_uart.c</FilePath>
             </File>
             <File>
               <FileName>stm32f1xx_hal.c</FileName>
@@ -680,6 +690,41 @@
               <FileName>soft_timer.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Middlewares\soft_timer.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Application/User/App</GroupName>
+          <Files>
+            <File>
+              <FileName>app.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../App/src/app.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_board.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../App/src/app_board.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../App/src/app_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_key_count.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../App/src/app_key_count.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_ui.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../App/src/app_ui.c</FilePath>
+            </File>
+            <File>
+              <FileName>app_uart_echo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>../App/src/app_uart_echo.c</FilePath>
             </File>
           </Files>
         </Group>
