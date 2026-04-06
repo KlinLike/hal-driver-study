@@ -59,7 +59,18 @@ void Error_Handler(void);
 /* Private defines -----------------------------------------------------------*/
 
 /* USER CODE BEGIN Private defines */
+/* 板级 GPIO：命名规则为 <功能>_GPIO_Port / <功能>_GPIO_Pin，与 HAL 参数一致，便于扩展 */
+#define LED_GPIO_Port   GPIOC
+#define LED_GPIO_Pin    GPIO_PIN_13
 
+#define BUZZ_GPIO_Port  GPIOA
+#define BUZZ_GPIO_Pin   GPIO_PIN_8
+
+#define LDR_GPIO_Port   GPIOB
+#define LDR_GPIO_Pin    GPIO_PIN_11
+
+#define KEY_GPIO_Port   GPIOB
+#define KEY_GPIO_Pin    GPIO_PIN_14
 /* USER CODE END Private defines */
 
 #ifdef __cplusplus

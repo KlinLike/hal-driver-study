@@ -1,4 +1,4 @@
-#include "soft_timer.h"
+﻿#include "soft_timer.h"
 #include "stm32f1xx_hal.h"
 
 void soft_timer_init(soft_timer_t *timer, uint32_t timeout_ms, uint8_t mode,
