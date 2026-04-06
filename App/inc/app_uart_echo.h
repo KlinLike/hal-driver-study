@@ -13,5 +13,7 @@ void app_uart_echo_init(void);
 void app_uart_echo_irq_handler(void);
 /** 主循环：队列非空则取字节、+1、格式化发送 */
 void app_uart_echo_process(void);
+/** 整屏：UART 模式下的 OLED 标题与说明行 */
+void app_uart_echo_ui_full(void);
 
 #endif /* APP_UART_ECHO_H */

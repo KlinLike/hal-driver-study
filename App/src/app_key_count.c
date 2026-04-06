@@ -16,6 +16,7 @@ void app_key_count_on_debounce_done(void)
 {
     switch (APP_MODE_SELECT) {
     case APP_MODE_CLOCK:
+    case APP_MODE_UART_IRQ:
         break;
     case APP_MODE_KEY_COUNT: {
         GPIO_PinState level = HAL_GPIO_ReadPin(KEY_GPIO_Port, KEY_GPIO_Pin);

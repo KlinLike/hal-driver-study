@@ -4,7 +4,9 @@
  */
 #include "app_uart_echo.h"
 
+#include "app_config.h"
 #include "circle_buffer.h"
+#include "driver_oled.h"
 #include "main.h"
 #include "usart.h"
 
@@ -13,7 +15,7 @@
 static circle_buffer_t s_rx_ring;
 static uint8_t s_rx_pool[UART_RX_RING_SIZE];
 
-/* 将 (rx+1) 格式化为 RES-> … 并发阻塞发送 */
+/* 将 (rx+1) 格式化为 RES-> …；串口发 CRLF；UART 模式下同步刷新 OLED 下一行 */
 static void uart_send_res_plus1(uint8_t rx_byte)
 {
     uint8_t out = (uint8_t)(rx_byte + 1u);
@@ -35,6 +37,12 @@ static void uart_send_res_plus1(uint8_t rx_byte)
         buf[n++] = 'x';
         buf[n++] = hex[(out >> 4) & 0x0Fu];
         buf[n++] = hex[out & 0x0Fu];
+    }
+
+    if (APP_MODE_SELECT == APP_MODE_UART_IRQ) {
+        buf[n] = '\0';
+        OLED_ClearLine(OLED_X_TEXT, OLED_Y_UART_REPLY);
+        OLED_PrintString(OLED_X_TEXT, OLED_Y_UART_REPLY, buf);
     }
 
     buf[n++] = '\r';
@@ -74,4 +82,12 @@ void app_uart_echo_process(void)
     while (circle_buffer_read(&s_rx_ring, &b) == 0) {
         uart_send_res_plus1(b);
     }
+}
+
+/** 整屏：UART 模式下的 OLED 标题与说明行 */
+void app_uart_echo_ui_full(void)
+{
+    OLED_PrintString(OLED_X_TEXT, OLED_Y_TITLE, "UART IRQ");
+    OLED_PrintString(OLED_X_TEXT, OLED_Y_BODY, "RX +1 RES->");
+    OLED_ClearLine(OLED_X_TEXT, OLED_Y_UART_REPLY);
 }
