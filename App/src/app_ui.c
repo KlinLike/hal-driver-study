@@ -7,6 +7,7 @@
 #include "app_clock.h"
 #include "app_config.h"
 #include "app_key_count.h"
+#include "app_uart_dma.h"
 #include "app_uart_echo.h"
 #include "driver_oled.h"
 
@@ -23,6 +24,9 @@ void app_ui_full_redraw(void)
         break;
     case APP_MODE_UART_IRQ:
         app_uart_echo_ui_full();
+        break;
+    case APP_MODE_UART_DMA:
+        app_uart_dma_ui_full();
         break;
     default:
         break;

@@ -11,7 +11,11 @@
 #include "app_config.h"
 #include "app_key_count.h"
 #include "app_ui.h"
+#if (APP_MODE_SELECT == APP_MODE_UART_DMA)
+#include "app_uart_dma.h"
+#else
 #include "app_uart_echo.h"
+#endif
 #include "driver_oled.h"
 #include "soft_timer.h"
 
@@ -35,7 +39,7 @@ static void key_timer_cb(void *arg)
 /** 应用初始化：关声光、OLED、软定时器、按模式刷界面（USART 在 main 已 init） */
 void app_init(void)
 {
-    /* USART1 已在 main 中 MX_USART1_UART_Init；环形队列已在 main 中 app_uart_echo_init */
+    /* USART1 与 DMA/环形队列已在 main 中初始化 */
 
     LED_Control(0);
     BUZZ_Control(0);
@@ -59,7 +63,11 @@ void app_systick_handler(void)
 /** 主循环调用：处理串口队列、时钟 OLED 刷新标志 */
 void app_poll(void)
 {
+#if (APP_MODE_SELECT == APP_MODE_UART_DMA)
+    app_uart_dma_process();
+#else
     app_uart_echo_process();
+#endif
     app_clock_poll();
 }
 

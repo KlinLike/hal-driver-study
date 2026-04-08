@@ -19,7 +19,7 @@ typedef enum {
 #define KEY_DEBOUNCE_MS  10u
 
 /** 运行模式：改后重新编译烧录 */
-#define APP_MODE_SELECT  APP_MODE_UART_IRQ
+#define APP_MODE_SELECT  APP_MODE_UART_DMA
 
 /** OLED：正文起始列 0~15（0 起铺满宽度）；y 为页，字符占两行；偶数 y 便于对齐黄/蓝区 */
 #define OLED_X_TEXT      0u
