@@ -5,6 +5,7 @@
 #include "app.h"
 
 #include <stddef.h>
+#include <stdio.h>
 
 #include "app_board.h"
 #include "app_clock.h"
@@ -51,6 +52,15 @@ void app_init(void)
     soft_timer_init(&s_key_timer, KEY_DEBOUNCE_MS, SOFT_TIMER_MODE_ONESHOT, key_timer_cb, NULL);
 
     app_ui_full_redraw();
+
+#if APP_UART_BLOCKING_TEST
+    {
+        char buf[64];
+        printf("=== BLOCKING TEST: enter text ===\r\n");
+        scanf("%63s", buf);
+        printf("Got: %s\r\n", buf);
+    }
+#endif
 }
 
 /** SysTick 1ms 里调用，驱动软定时器（时钟秒、按键消抖） */

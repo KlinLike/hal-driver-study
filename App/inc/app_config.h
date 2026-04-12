@@ -21,6 +21,9 @@ typedef enum {
 /** 运行模式：改后重新编译烧录 */
 #define APP_MODE_SELECT  APP_MODE_UART_IRQ
 
+/** 串口阻塞收发测试：1 时 app_init 末尾执行一次 scanf 回显，测完改回 0 */
+#define APP_UART_BLOCKING_TEST  1
+
 /** OLED：正文起始列 0~15（0 起铺满宽度）；y 为页，字符占两行；偶数 y 便于对齐黄/蓝区 */
 #define OLED_X_TEXT      0u
 #define OLED_Y_TITLE     0u
