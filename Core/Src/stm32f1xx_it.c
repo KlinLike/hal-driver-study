@@ -241,6 +241,7 @@ void USART1_IRQHandler(void)
   /* USER CODE BEGIN USART1_IRQn 0 */
 #if (APP_MODE_SELECT != APP_MODE_UART_DMA)
   app_uart_echo_irq_handler();
+  return;
 #endif
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
