@@ -23,10 +23,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 extern void app_systick_handler(void);
-#include "app_config.h"
-#if (APP_MODE_SELECT != APP_MODE_UART_DMA)
-#include "app_uart_echo.h"
-#endif
+#include "app_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -239,10 +236,9 @@ void DMA1_Channel5_IRQHandler(void)
 void USART1_IRQHandler(void)
 {
   /* USER CODE BEGIN USART1_IRQn 0 */
-#if (APP_MODE_SELECT != APP_MODE_UART_DMA)
-  app_uart_echo_irq_handler();
-  return;
-#endif
+  app_uart_irq();
+  if (!app_uart_use_hal_irq())
+      return;
   /* USER CODE END USART1_IRQn 0 */
   HAL_UART_IRQHandler(&huart1);
   /* USER CODE BEGIN USART1_IRQn 1 */

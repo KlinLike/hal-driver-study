@@ -57,6 +57,9 @@ void app_uart_echo_init(void)
     s_rx_idx      = 0u;
     s_frame_len   = 0u;
     s_frame_ready = 0u;
+
+    __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
+    __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
 }
 
 /**

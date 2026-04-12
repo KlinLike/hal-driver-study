@@ -26,12 +26,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "app.h"
-#include "app_config.h"
-#if (APP_MODE_SELECT == APP_MODE_UART_DMA)
-#include "app_uart_dma.h"
-#else
-#include "app_uart_echo.h"
-#endif
+#include "app_uart.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -102,11 +97,7 @@ int main(void)
   /* Initialize interrupts */
   MX_NVIC_Init();
   /* USER CODE BEGIN 2 */
-#if (APP_MODE_SELECT == APP_MODE_UART_DMA)
-  app_uart_dma_init();
-#else
-  app_uart_echo_init();
-#endif
+  app_uart_init();
   app_init();
   /* USER CODE END 2 */
 

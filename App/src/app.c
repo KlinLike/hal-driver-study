@@ -5,18 +5,13 @@
 #include "app.h"
 
 #include <stddef.h>
-#include <stdio.h>
 
 #include "app_board.h"
 #include "app_clock.h"
 #include "app_config.h"
 #include "app_key_count.h"
+#include "app_uart.h"
 #include "app_ui.h"
-#if (APP_MODE_SELECT == APP_MODE_UART_DMA)
-#include "app_uart_dma.h"
-#else
-#include "app_uart_echo.h"
-#endif
 #include "driver_oled.h"
 #include "soft_timer.h"
 
@@ -52,15 +47,6 @@ void app_init(void)
     soft_timer_init(&s_key_timer, KEY_DEBOUNCE_MS, SOFT_TIMER_MODE_ONESHOT, key_timer_cb, NULL);
 
     app_ui_full_redraw();
-
-#if APP_UART_BLOCKING_TEST
-    {
-        char buf[64];
-        printf("=== BLOCKING TEST: enter text ===\r\n");
-        scanf("%63s", buf);
-        printf("Got: %s\r\n", buf);
-    }
-#endif
 }
 
 /** SysTick 1ms 里调用，驱动软定时器（时钟秒、按键消抖） */
@@ -73,11 +59,7 @@ void app_systick_handler(void)
 /** 主循环调用：处理串口队列、时钟 OLED 刷新标志 */
 void app_poll(void)
 {
-#if (APP_MODE_SELECT == APP_MODE_UART_DMA)
-    app_uart_dma_process();
-#else
-    app_uart_echo_process();
-#endif
+    app_uart_process();
     app_clock_poll();
 }
 

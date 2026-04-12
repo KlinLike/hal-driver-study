@@ -72,8 +72,6 @@ static void send_echo(const uint8_t *data, uint16_t len)
 
 static void update_oled(const uint8_t *data, uint16_t len)
 {
-    if (APP_MODE_SELECT != APP_MODE_UART_DMA) return;
-
     char line[17]; /* SSD1306 每行最多 16 个半角字符 + '\0' */
     uint16_t show = (len > 16u) ? 16u : len;
 

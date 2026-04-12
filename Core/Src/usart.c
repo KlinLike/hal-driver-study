@@ -10,7 +10,6 @@
 #include "usart.h"
 
 /* USER CODE BEGIN 0 */
-#include "app_config.h"
 #include <stdio.h>
 /* USER CODE END 0 */
 
@@ -43,10 +42,7 @@ void MX_USART1_UART_Init(void)
     Error_Handler();
   }
   /* USER CODE BEGIN USART1_Init 2 */
-#if (APP_MODE_SELECT != APP_MODE_UART_DMA)
-  __HAL_UART_ENABLE_IT(&huart1, UART_IT_RXNE);
-  __HAL_UART_ENABLE_IT(&huart1, UART_IT_IDLE);
-#endif
+
   /* USER CODE END USART1_Init 2 */
 
 }

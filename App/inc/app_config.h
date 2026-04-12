@@ -7,22 +7,18 @@
 
 #include <stdint.h>
 
-/** 编译期单选：时钟 / 按键计数 / 串口 IRQ / 串口 DMA+IDLE（见 APP_MODE_SELECT） */
-typedef enum {
-    APP_MODE_CLOCK = 0,   /**< OLED 秒表时钟 + PC13 秒闪 */
-    APP_MODE_KEY_COUNT,   /**< 按键消抖后计数，OLED 显示次数 */
-    APP_MODE_UART_IRQ,    /**< OLED 提示串口 IRQ 回显；按键行为同 CLOCK */
-    APP_MODE_UART_DMA     /**< DMA+IDLE 不定长接收回显；按键行为同 CLOCK */
-} app_mode_t;
+/** 编译期单选：时钟 / 按键计数 / 串口 IRQ / 串口 DMA+IDLE（见 APP_MODE_SELECT）
+ *  必须用 #define 而非 enum，否则 #if 预处理指令无法识别其值 */
+#define APP_MODE_CLOCK      0   /**< OLED 秒表时钟 + PC13 秒闪 */
+#define APP_MODE_KEY_COUNT  1   /**< 按键消抖后计数，OLED 显示次数 */
+#define APP_MODE_UART_IRQ   2   /**< OLED 提示串口 IRQ 回显；按键行为同 CLOCK */
+#define APP_MODE_UART_DMA   3   /**< DMA+IDLE 不定长接收回显；按键行为同 CLOCK */
 
 /** 消抖时间(ms)，可在 10~50 间微调 */
 #define KEY_DEBOUNCE_MS  10u
 
 /** 运行模式：改后重新编译烧录 */
-#define APP_MODE_SELECT  APP_MODE_UART_IRQ
-
-/** 串口阻塞收发测试：1 时 app_init 末尾执行一次 scanf 回显，测完改回 0 */
-#define APP_UART_BLOCKING_TEST  1
+#define APP_MODE_SELECT  APP_MODE_UART_DMA
 
 /** OLED：正文起始列 0~15（0 起铺满宽度）；y 为页，字符占两行；偶数 y 便于对齐黄/蓝区 */
 #define OLED_X_TEXT      0u

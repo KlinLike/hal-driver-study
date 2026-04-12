@@ -11,12 +11,9 @@
 static volatile uint32_t s_clock_seconds;
 static volatile uint8_t s_clock_update_flag;
 
-/** 软定时器 1s 回调：仅 APP_MODE_CLOCK 时秒++、置刷新标志、闪 LED */
+/** 软定时器 1s 回调：秒++、置刷新标志、闪 LED */
 void app_clock_on_timer_tick(void)
 {
-    if (APP_MODE_SELECT != APP_MODE_CLOCK) {
-        return;
-    }
     s_clock_seconds++;
     s_clock_update_flag = 1;
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_GPIO_Pin);
