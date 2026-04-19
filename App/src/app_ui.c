@@ -27,6 +27,7 @@ void app_ui_full_redraw(void)
         app_uart_ui_full();
         break;
     case APP_MODE_MPU6050_POLL:
+    case APP_MODE_MPU6050_IT:
         app_mpu6050_ui_full();
         break;
     default:

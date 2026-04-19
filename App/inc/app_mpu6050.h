@@ -1,11 +1,18 @@
 ﻿/**
  * @file app_mpu6050.h
- * @brief MPU6050 查询方式（HAL I2C 内存模式）演示——课程 041 配套
+ * @brief MPU6050 演示：HAL I2C 的两种使用方式（课程 041 / 042 配套）
  *
- * 目标：用 HAL_I2C_Mem_Read 读 MPU6050 的 WHO_AM_I 寄存器，验证 I2C 通信。
+ * 同一份 .c 通过 APP_MODE_SELECT 编译期切换两种实现，便于直观对比：
+ *   APP_MODE_MPU6050_POLL  -> 课程 041：HAL_I2C_Mem_Read/Write（阻塞查询）
+ *   APP_MODE_MPU6050_IT    -> 课程 042：HAL_I2C_Mem_Read_IT/Write_IT（中断异步）
  *
- * 流程：上电 -> 写 PWR_MGMT_1=0 唤醒 -> 读 WHO_AM_I(0x75)。
- * 结果同时打印到 USART1 和 OLED。
+ * 两种方式的"业务流程"完全相同：
+ *   上电 -> 写 PWR_MGMT_1=0 唤醒 -> 读 WHO_AM_I(0x75) -> OLED + 串口输出
+ *
+ * 中断方式的关键点（041 没有的）：
+ *   - _IT 函数立即返回，传输在后台进行；通过回调置位完成标志才知道结束
+ *   - 必须使能 I2C1_EV / I2C1_ER 两个 NVIC 中断（CubeMX 已勾选）
+ *   - 等待标志要带超时，避免 I2C 卡死时陷入 while(1) 死循环
  *
  * ====== 重要踩坑提示（看完再写代码，能省你 1 小时） ======
  * I2C 上 7 位地址 0x68 被多颗 InvenSense/TDK 芯片共用，市面便宜的

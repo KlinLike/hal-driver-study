@@ -47,7 +47,7 @@ void app_init(void)
 
     soft_timer_init(&s_key_timer, KEY_DEBOUNCE_MS, SOFT_TIMER_MODE_ONESHOT, key_timer_cb, NULL);
 
-#if (APP_MODE_SELECT == APP_MODE_MPU6050_POLL)
+#if (APP_MODE_SELECT == APP_MODE_MPU6050_POLL) || (APP_MODE_SELECT == APP_MODE_MPU6050_IT)
     app_mpu6050_init();
 #endif
 
