@@ -1,0 +1,45 @@
+﻿# ============================================================
+# Git 属性规则（后定义优先，所以 vendor 排除规则必须放在最后）
+# ============================================================
+
+# ---------- 1. 全仓库默认：文本统一存 LF ----------
+# text=auto: 让 git 自动识别文本/二进制
+# eol=lf:    仓库内统一存 LF；checkout 时按平台习惯转换
+* text=auto eol=lf
+
+# ---------- 2. 启动汇编 / 链接脚本：CRLF ----------
+# Keil 自带的启动文件历来是 CRLF，避免转换造成编译告警
+*.s   text eol=crlf
+*.sct text eol=crlf
+
+# ---------- 3. Keil 工程文件：完全保持原样 ----------
+# Keil MDK 编译/保存时会把这些文件强制写成 CRLF，
+# 如果让 git 用 eol=crlf 转换，会和 core.autocrlf=false 起冲突，
+# 每次编译后都出现"幻觉 diff"。直接当二进制对待最省心。
+*.uvprojx  -text
+*.uvoptx   -text
+*.uvguix.* -text
+
+# ---------- 4. 二进制：明确标记，防止 git 误处理 ----------
+*.axf  binary
+*.hex  binary
+*.bin  binary
+*.elf  binary
+*.crf  binary
+*.o    binary
+*.lib  binary
+*.a    binary
+*.png  binary
+*.jpg  binary
+*.jpeg binary
+*.gif  binary
+*.ico  binary
+*.pdf  binary
+
+# ============================================================
+# 厂商代码：完全不参与 normalize（必须放在最后才能覆盖前面的规则）
+# 用 -text 当二进制处理，git 一字节都不会改
+# 这样将来更新 ST/CMSIS 库时不会因换行符产生大量 diff
+# ============================================================
+Drivers/STM32F1xx_HAL_Driver/** -text
+Drivers/CMSIS/**                -text
