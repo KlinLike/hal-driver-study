@@ -741,6 +741,11 @@
               <FileType>1</FileType>
               <FilePath>..\App\src\app_uart.c</FilePath>
             </File>
+            <File>
+              <FileName>app_mpu6050.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\App\src\app_mpu6050.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

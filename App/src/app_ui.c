@@ -7,6 +7,7 @@
 #include "app_clock.h"
 #include "app_config.h"
 #include "app_key_count.h"
+#include "app_mpu6050.h"
 #include "app_uart.h"
 #include "driver_oled.h"
 
@@ -24,6 +25,9 @@ void app_ui_full_redraw(void)
     case APP_MODE_UART_IRQ:
     case APP_MODE_UART_DMA:
         app_uart_ui_full();
+        break;
+    case APP_MODE_MPU6050_POLL:
+        app_mpu6050_ui_full();
         break;
     default:
         break;

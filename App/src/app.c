@@ -10,6 +10,7 @@
 #include "app_clock.h"
 #include "app_config.h"
 #include "app_key_count.h"
+#include "app_mpu6050.h"
 #include "app_uart.h"
 #include "app_ui.h"
 #include "driver_oled.h"
@@ -46,6 +47,10 @@ void app_init(void)
 
     soft_timer_init(&s_key_timer, KEY_DEBOUNCE_MS, SOFT_TIMER_MODE_ONESHOT, key_timer_cb, NULL);
 
+#if (APP_MODE_SELECT == APP_MODE_MPU6050_POLL)
+    app_mpu6050_init();
+#endif
+
     app_ui_full_redraw();
 }
 
@@ -61,6 +66,7 @@ void app_poll(void)
 {
     app_uart_process();
     app_clock_poll();
+    /* MPU6050 模式：所有 I2C 操作在 app_mpu6050_init() 一次性完成，主循环无需轮询 */
 }
 
 /** 按键 EXTI 触发，启动消抖单次定时器 */
