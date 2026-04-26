@@ -1,4 +1,4 @@
-/*  Copyright (s) 2019 深圳百问网科技有限公司
+﻿/*  Copyright (s) 2019 深圳百问网科技有限公司
  *  All rights reserved
  * 
  * 文件名称：driver_oled.c
@@ -13,6 +13,8 @@
 #include "driver_oled.h"
 #include "ascii_font.c"
 
+#include <stddef.h>
+#include <string.h>
 #include "stm32f1xx_hal.h"
 
 static uint8_t oledBuffer[FRAME_BUFFER_SIZE];
@@ -552,6 +554,60 @@ int OLED_PrintString(uint8_t x, uint8_t y, const char *str)
         i++;
     }
     return i;
+}
+
+/*
+ *  函数名：OLED_PutChinese16x16
+ *  功能描述：显示 1 个 16x16 汉字（页地址模式）
+ *  输入参数：col - 起始列(0~127)
+ *            page - 起始页(0~7，实际占用 page 和 page+1)
+ *            hz16x16 - 32字节点阵
+ *  输出参数：无
+ *  返回值：无
+ */
+void OLED_PutChinese16x16(uint8_t col, uint8_t page, const uint8_t hz16x16[32])
+{
+    if (hz16x16 == NULL) {
+        return;
+    }
+    if ((col > 112u) || (page > 6u)) {
+        return;
+    }
+
+    OLED_SetPosition(page, col);
+    OLED_WriteNBytes((uint8_t *)&hz16x16[0], 16);
+
+    OLED_SetPosition(page + 1u, col);
+    OLED_WriteNBytes((uint8_t *)&hz16x16[16], 16);
+}
+
+/*
+ *  函数名：OLED_PrintChinese16x16
+ *  功能描述：连续显示多个 16x16 汉字
+ *  输入参数：col - 起始列(0~127)
+ *            page - 起始页(0~7)
+ *            hz16x16_arr - 点阵数组首地址（每字32字节）
+ *            count - 汉字个数
+ *  输出参数：无
+ *  返回值：实际显示的汉字个数
+ */
+int OLED_PrintChinese16x16(uint8_t col, uint8_t page, const uint8_t *hz16x16_arr, uint8_t count)
+{
+    uint8_t i;
+
+    if ((hz16x16_arr == NULL) || (count == 0u)) {
+        return 0;
+    }
+
+    for (i = 0; i < count; i++) {
+        if (col > 112u) {
+            break;
+        }
+        OLED_PutChinese16x16(col, page, &hz16x16_arr[i * 32u]);
+        col += 16u;
+    }
+
+    return (int)i;
 }
 
 /*

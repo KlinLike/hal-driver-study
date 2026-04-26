@@ -14,6 +14,9 @@ static volatile uint8_t s_clock_update_flag;
 /** 软定时器 1s 回调：秒++、置刷新标志、闪 LED */
 void app_clock_on_timer_tick(void)
 {
+#if (APP_MODE_SELECT != APP_MODE_CLOCK)
+    return;
+#endif
     s_clock_seconds++;
     s_clock_update_flag = 1;
     HAL_GPIO_TogglePin(LED_GPIO_Port, LED_GPIO_Pin);
@@ -43,6 +46,9 @@ void app_clock_draw_line(void)
 /** 主循环：有刷新标志时重画时间行 */
 void app_clock_poll(void)
 {
+#if (APP_MODE_SELECT != APP_MODE_CLOCK)
+    return;
+#endif
     if (s_clock_update_flag == 0u) {
         return;
     }
