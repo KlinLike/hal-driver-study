@@ -11,6 +11,7 @@
 #include "app_config.h"
 #include "app_key_count.h"
 #include "app_mpu6050.h"
+#include "app_spi_flash.h"
 #include "app_uart.h"
 #include "app_ui.h"
 #include "driver_oled.h"
@@ -49,6 +50,10 @@ void app_init(void)
 
 #if (APP_MODE_SELECT == APP_MODE_MPU6050_POLL) || (APP_MODE_SELECT == APP_MODE_MPU6050_IT)
     app_mpu6050_init();
+#endif
+
+#if (APP_MODE_SELECT == APP_MODE_SPI_FLASH)
+    app_spi_flash_init();
 #endif
 
     app_ui_full_redraw();

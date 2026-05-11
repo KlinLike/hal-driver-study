@@ -57,6 +57,8 @@ void Error_Handler(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
+#define SPI_FLASH_CS_Pin GPIO_PIN_9
+#define SPI_FLASH_CS_GPIO_Port GPIOB
 
 /* USER CODE BEGIN Private defines */
 /* 板级 GPIO：命名规则为 <功能>_GPIO_Port / <功能>_GPIO_Pin，与 HAL 参数�?致，便于扩展 */

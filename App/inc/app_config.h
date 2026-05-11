@@ -16,12 +16,13 @@
 #define APP_MODE_MPU6050_POLL 4 /**< I2C 查询方式读 MPU6050（课程 041） */
 #define APP_MODE_MPU6050_IT   5 /**< I2C 中断方式读 MPU6050（课程 042） */
 #define APP_MODE_OLED_CHINESE 6 /**< OLED 显示 16x16 汉字演示 */
+#define APP_MODE_SPI_FLASH    7 /**< SPI Flash W25Q64 读写测试（课程 048-050） */
 
 /** 消抖时间(ms)，可在 10~50 间微调 */
 #define KEY_DEBOUNCE_MS  10u
 
 /** 运行模式：改后重新编译烧录 */
-#define APP_MODE_SELECT  APP_MODE_OLED_CHINESE
+#define APP_MODE_SELECT  APP_MODE_SPI_FLASH
 
 /** OLED：正文起始列 0~15（0 起铺满宽度）；y 为页，字符占两行；偶数 y 便于对齐黄/蓝区 */
 #define OLED_X_TEXT      0u

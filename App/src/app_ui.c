@@ -8,6 +8,7 @@
 #include "app_config.h"
 #include "app_key_count.h"
 #include "app_mpu6050.h"
+#include "app_spi_flash.h"
 #include "app_uart.h"
 #include "driver_oled.h"
 
@@ -60,6 +61,9 @@ void app_ui_full_redraw(void)
         break;
     case APP_MODE_OLED_CHINESE:
         app_oled_chinese_ui_full();
+        break;
+    case APP_MODE_SPI_FLASH:
+        app_spi_flash_ui_full();
         break;
     default:
         break;
