@@ -8,6 +8,7 @@
 
 #include "app_board.h"
 #include "app_clock.h"
+#include "app_color_led.h"
 #include "app_config.h"
 #include "app_key_count.h"
 #include "app_mpu6050.h"
@@ -19,6 +20,7 @@
 
 static soft_timer_t s_clock_timer;
 static soft_timer_t s_key_timer;
+static soft_timer_t s_color_led_timer;
 
 /* 1s 周期回调：仅时钟模式累加秒、翻 PC13 */
 static void clock_timer_cb(void *arg)
@@ -32,6 +34,13 @@ static void key_timer_cb(void *arg)
 {
     (void)arg;
     app_key_count_on_debounce_done();
+}
+
+/* 20ms 周期回调：驱动三色灯演示状态机 */
+static void color_led_timer_cb(void *arg)
+{
+    (void)arg;
+    app_color_led_on_timer_tick();
 }
 
 /** 应用初始化：关声光、OLED、软定时器、按模式刷界面（USART 在 main 已 init） */
@@ -56,6 +65,12 @@ void app_init(void)
     app_spi_flash_init();
 #endif
 
+#if (APP_MODE_SELECT == APP_MODE_COLOR_LED)
+    soft_timer_init(&s_color_led_timer, 20u, SOFT_TIMER_MODE_PERIODIC, color_led_timer_cb, NULL);
+    soft_timer_start(&s_color_led_timer);
+    app_color_led_init();
+#endif
+
     app_ui_full_redraw();
 }
 
@@ -64,6 +79,7 @@ void app_systick_handler(void)
 {
     soft_timer_process(&s_clock_timer);
     soft_timer_process(&s_key_timer);
+    soft_timer_process(&s_color_led_timer);
 }
 
 /** 主循环调用：处理串口队列、时钟 OLED 刷新标志 */
@@ -71,7 +87,7 @@ void app_poll(void)
 {
     app_uart_process();
     app_clock_poll();
-    /* MPU6050 模式：所有 I2C 操作在 app_mpu6050_init() 一次性完成，主循环无需轮询 */
+    app_color_led_poll();
 }
 
 /** 按键 EXTI 触发，启动消抖单次定时器 */

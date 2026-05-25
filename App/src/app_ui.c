@@ -5,6 +5,7 @@
 #include "app_ui.h"
 
 #include "app_clock.h"
+#include "app_color_led.h"
 #include "app_config.h"
 #include "app_key_count.h"
 #include "app_mpu6050.h"
@@ -64,6 +65,9 @@ void app_ui_full_redraw(void)
         break;
     case APP_MODE_SPI_FLASH:
         app_spi_flash_ui_full();
+        break;
+    case APP_MODE_COLOR_LED:
+        app_color_led_ui_full();
         break;
     default:
         break;
