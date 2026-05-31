@@ -2,7 +2,7 @@
 /**
   ******************************************************************************
   * @file    usart.c
-  * @brief   USART1 配置：115200 8N1
+  * @brief   USART1 配置�?115200 8N1
   ******************************************************************************
   */
 /* USER CODE END Header */
@@ -144,7 +144,7 @@ void HAL_UART_MspDeInit(UART_HandleTypeDef* uartHandle)
 
 /* USER CODE BEGIN 1 */
 
-/* ---- MicroLib retarget: printf/scanf → USART1 ---- */
+/* ---- MicroLib retarget: printf/scanf �? USART1 ---- */
 
 int fputc(int ch, FILE *f)
 {
